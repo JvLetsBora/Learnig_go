@@ -1,3 +1,5 @@
+//go:build unix
+
 package main
 
 import (
@@ -9,7 +11,8 @@ import (
 	"runtime"
 	"sort"
 	"sync"
-	"syscall"
+
+	"golang.org/x/exp/mmap"
 )
 
 type measurement struct {
@@ -57,13 +60,13 @@ func processFile(filename string) map[string]*measurement {
 		log.Fatalf("Invalid file size: %d", size)
 	}
 
-	data, err := syscall.Mmap(int(f.Fd()), 0, int(size), syscall.PROT_READ, syscall.MAP_SHARED)
+	data, err := mmap.ReaderAt([]byte(f.Fd()), size)
 	if err != nil {
 		log.Fatalf("Mmap: %v", err)
 	}
 
 	defer func() {
-		if err := syscall.Munmap(data); err != nil {
+		if err := mmap.ReaderAt(data); err != nil {
 			log.Fatalf("Munmap: %v", err)
 		}
 	}()
