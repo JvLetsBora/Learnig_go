@@ -40,7 +40,7 @@
 
 8. **Create a list**
    - Método: POST
-   - Descrição: Cria uma lista.
+   - Descrição: Atualiza uma lista.
    - Similaridade com REST: Similar à rota anterior, esta rota também usa um método POST para uma operação de criação. No entanto, a estrutura da solicitação, incluindo o envio de texto livre no corpo, pode não ser totalmente alinhada com as práticas REST recomendadas.
 
 9. **Search lists**
