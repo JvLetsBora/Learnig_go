@@ -1,0 +1,160 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Tasks",
+    "collectionId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+    "dateExported": "2024-04-29T20:46:17.989Z",
+    "version": "1.2",
+    "folders": [
+        {
+            "_id": "9e001288-8853-4f85-89ce-d5192e0c764b",
+            "name": "Users",
+            "containerId": "",
+            "created": "2024-04-29T20:44:51.253Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "6cabbfc4-cfb8-4e1a-b1fb-e2e340e1b859",
+            "name": "Tasks",
+            "containerId": "",
+            "created": "2024-04-29T20:45:19.360Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "5c31e4f2-730c-46f8-99e5-90c7165f1b2a",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "6cabbfc4-cfb8-4e1a-b1fb-e2e340e1b859",
+            "name": "Task",
+            "url": "http://127.0.0.1:8000/tasks/{task_id}",
+            "method": "DELETE",
+            "sortNum": 10000,
+            "created": "2024-04-29T20:45:29.752Z",
+            "modified": "2024-04-29T20:45:29.752Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "task_id",
+                    "value": "34",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "430dbbfc-689e-4b00-9400-a6fb3e8dfd76",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "6cabbfc4-cfb8-4e1a-b1fb-e2e340e1b859",
+            "name": "User",
+            "url": "http://127.0.0.1:8000/users/{user_id}/",
+            "method": "DELETE",
+            "sortNum": 20000,
+            "created": "2024-04-29T20:45:35.191Z",
+            "modified": "2024-04-29T20:45:35.191Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "user_id",
+                    "value": "34",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "312d40d4-b0d9-4c4f-9f05-c1988cc5cfb6",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "9e001288-8853-4f85-89ce-d5192e0c764b",
+            "name": "Users",
+            "url": "http://127.0.0.1:8000/users/",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-04-29T20:45:44.273Z",
+            "modified": "2024-04-29T20:45:44.273Z",
+            "headers": []
+        },
+        {
+            "_id": "f1165cda-7ca6-427f-ae85-d3c496087369",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "9e001288-8853-4f85-89ce-d5192e0c764b",
+            "name": "User",
+            "url": "http://127.0.0.1:8000/users/{user_id}/",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2024-04-29T20:45:52.733Z",
+            "modified": "2024-04-29T20:45:52.733Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "user_id",
+                    "value": "1",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"email\": \"ssss\",\n    \"password\": \"str\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "33d12ca1-5376-4026-a62a-97937f2d0a00",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "6cabbfc4-cfb8-4e1a-b1fb-e2e340e1b859",
+            "name": "Tasks",
+            "url": "http://127.0.0.1:8000/users/{user_id}/tasks/",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-04-29T20:45:59.363Z",
+            "modified": "2024-04-29T20:45:59.363Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "user_id",
+                    "value": "1",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\": \"Sei lá\",\n    \"description\": \"Boa!\"\n}\n",
+                "form": []
+            }
+        },
+        {
+            "_id": "abf7ed00-124b-4ff6-b763-1dc868581b7c",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "9e001288-8853-4f85-89ce-d5192e0c764b",
+            "name": "User",
+            "url": "http://127.0.0.1:8000/users/{user_id}/",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-04-29T20:46:06.074Z",
+            "modified": "2024-04-29T20:46:06.074Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "user_id",
+                    "value": "2",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "ca49f9f3-0c9a-4954-a914-34d8f01f9d7b",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "9e001288-8853-4f85-89ce-d5192e0c764b",
+            "name": "User",
+            "url": "http://127.0.0.1:8000/users/",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2024-04-29T20:46:13.726Z",
+            "modified": "2024-04-29T20:46:13.726Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"teste\",\n  \"password\":\"09\"\n}\n",
+                "form": []
+            }
+        }
+    ],
+    "ref": "0T3M6ztZqabSAVny8-xhN3_a63M9BJ-CcwJ3fKh4b4EH3vge2AA9A3XnKn7hHQwtbYWZVNYOYgSwfIHPayOzVw"
+}
