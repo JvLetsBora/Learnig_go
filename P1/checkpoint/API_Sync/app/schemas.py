@@ -1,6 +1,14 @@
 from pydantic import BaseModel
 
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str 
+
 class TaskBase(BaseModel):
     title: str
     description: str
@@ -9,13 +17,21 @@ class TaskBase(BaseModel):
 class TaskCreate(TaskBase):
     pass
 
+class UserUpdate(BaseModel):
+    email: str
+    password: str
+
+
+class TaskUpdate(BaseModel):
+    title: str
+    description: str
 
 class Task(TaskBase):
     id: int
     owner_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserBase(BaseModel):
@@ -32,4 +48,4 @@ class User(UserBase):
     tasks: list[Task] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True

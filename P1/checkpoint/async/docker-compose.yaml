@@ -2,69 +2,15 @@ version: '3'
 
 services:
 
-  rabbitmq:
-    container_name: rabbitmq
-    build: ./rabbitMQ
-    ports:
-      - "15672:15672"
-    command: ["rabbitmq-server"]
-    healthcheck:
-      test: rabbitmq-diagnostics check_port_connectivity
-      interval: 2s
-      timeout: 2s
-      retries: 20
-    restart: always
-
-  influxdb:
-    image: influxdb:2.7.5-alpine
-    container_name: influxdb
+  api:
+    build: .
+    container_name: api
     environment:
-      DOCKER_INFLUXDB_INIT_MODE: setup
-      DOCKER_INFLUXDB_INIT_USERNAME: admin
-      DOCKER_INFLUXDB_INIT_PASSWORD: admin123
-      DOCKER_INFLUXDB_INIT_ORG: iot
-      DOCKER_INFLUXDB_INIT_BUCKET: test
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: admin
+      PORT: 8000
     ports:
-    - "8086:8086"
-    healthcheck:
-      test: "curl -f http://localhost:8086/ping"
-      interval: 2s
-      timeout: 2s
-      retries: 20
-
-  consumer:
-    container_name: consumer
-    build: ./consumer
-    volumes:
-      - ./consumer:/app
+      - '8000:8000'
+    restart: "no"
     depends_on:
-      rabbitmq:
-        condition: service_healthy
-      influxdb:
-        condition: service_healthy
-
-  simulator:
-    container_name: simulator
-    build: ./simulator
-    volumes:
-      - ./simulator:/app
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      influxdb:
-        condition: service_healthy
-
-  server:
-    container_name: server
-    build: ./server
-    volumes:
-      - ./server:/app
-    ports:
-    - 8080:8080
-    depends_on:
-      influxdb:
-        condition: service_healthy
       postgres:
         condition: service_healthy
 
@@ -85,12 +31,6 @@ services:
       timeout: 2s
       retries: 20
     restart: always
-
-  # client:
-  #   container_name: client
-  #   build: ./frontend
-  #   ports:
-  #     - 3000:3000
 
   adminer:
     image: adminer

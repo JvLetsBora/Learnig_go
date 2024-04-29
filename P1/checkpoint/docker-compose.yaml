@@ -2,15 +2,15 @@ version: '3'
 
 services:
 
-  postgres:
-    container_name: postgres
+  postgres_server:
+    container_name: postgres_server
     image: postgres:16.2-alpine
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres
+      POSTGRES_DB: postgres_server
     ports:
       - "5432:5432"
     healthcheck:
