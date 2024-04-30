@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 from passlib.context import CryptContext
-brcypt_context = CryptContext(schemes=["brcypt"], deprecated="auto")
+brcypt_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
+
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()

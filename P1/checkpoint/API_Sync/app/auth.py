@@ -6,8 +6,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from starlette import status
-from database import SessionLocal
-from models import User
+from .database import SessionLocal
+from .models import User
 from sqlalchemy.orm import Session
 
 router = APIRouter(
@@ -30,7 +30,7 @@ class CreateUserRequest(BaseModel):
 class TokenData(BaseModel):
     username: str 
 
-brcypt_context = CryptContext(schemes=["brcypt"], deprecated="auto")
+#brcypt_context = CryptContext(schemes=["brcypt"], deprecated="auto")
 auth2bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 def get_db():
