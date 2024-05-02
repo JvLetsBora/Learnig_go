@@ -2,27 +2,27 @@ version: '3'
 
 services:
 
-  api:
+  api_async:
     build: .
-    container_name: api
+    container_name: api_async
     environment:
       PORT: 8000
     ports:
       - '8000:8000'
     restart: "no"
     depends_on:
-      postgres:
+      postgres_async:
         condition: service_healthy
 
-  postgres:
-    container_name: postgres
+  postgres_async:
+    container_name: postgres_async
     image: postgres:16.2-alpine
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres
+      POSTGRES_DB: postgres_async
     ports:
       - "5432:5432"
     healthcheck:
@@ -32,7 +32,7 @@ services:
       retries: 20
     restart: always
 
-  adminer:
+  adminer_async:
     image: adminer
     restart: always
     ports:

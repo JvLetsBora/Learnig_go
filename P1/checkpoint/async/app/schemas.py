@@ -1,14 +1,6 @@
 from pydantic import BaseModel
 
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-
-class TokenData(BaseModel):
-    username: str 
-
 class TaskBase(BaseModel):
     title: str
     description: str
@@ -49,3 +41,13 @@ class User(UserBase):
 
     class Config:
         from_attributes = True
+
+
+
+class Token(BaseModel):
+    access_token: str
+    type_token: str
+
+class TokenCreate(BaseModel):
+    id: int
+    password: str
