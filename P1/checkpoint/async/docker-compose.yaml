@@ -6,23 +6,24 @@ services:
     build: .
     container_name: api_async
     environment:
-      PORT: 8000
+      PYTHONPATH: .
+      DATABASE_URL: "postgresql+asyncpg://username:password@postgresasync:5432/postgresasync"
     ports:
       - '8000:8000'
     restart: "no"
     depends_on:
-      postgres_async:
+      postgresasync:
         condition: service_healthy
 
-  postgres_async:
-    container_name: postgres_async
+  postgresasync:
+    container_name: postgresasync
     image: postgres:16.2-alpine
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres_async
+      POSTGRES_DB: postgresasync
     ports:
       - "5432:5432"
     healthcheck:
