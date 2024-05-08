@@ -61,3 +61,5 @@ sessionmanager = DatabaseSessionManager(settings.database_url, {"echo": settings
 async def get_db_session():
     async with sessionmanager.session() as session:
         yield session
+
+

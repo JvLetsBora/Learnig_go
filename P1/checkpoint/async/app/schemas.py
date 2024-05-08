@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from typing import List
 
 class TaskBase(BaseModel):
     title: str
@@ -35,12 +35,12 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    id: int
-    is_active: bool
-    tasks: list[Task] = []
+    id: int = None
+    is_active: bool = False
+    tasks: List[Task] = []
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 
 
