@@ -17,7 +17,7 @@ class UserStore{
   UserStore({required this.reposity});
 
   Future getUser() async {
-    isLoading.value = true;
+    isLoading.value = false;
 
     try {
       final result = await reposity.getUsers();
