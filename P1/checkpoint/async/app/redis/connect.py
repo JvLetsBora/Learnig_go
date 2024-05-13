@@ -51,23 +51,28 @@ class redis_interface():
 
 
 
-bicycle = {
+remedios = [
+    {
     "brand": "Velorim",
-    "model": "Jigger",
-    "price": 270,
-    "description": (
-        "Small and powerful, the Jigger is the best ride "
-        "for the smallest of tikes! This is the tiniest "
-        "kids pedal bike on the market available without"
-        " a coaster brake, the Jigger is the vehicle of "
-        "choice for the rare tenacious little rider "
-        "raring to go."
-    ),
-    "condition": "new",
-}
+    "model": "Dipirona 30 unidades",
+    "description": "Não há mais nem um",
+    "urgencia":"media"
+    },
+    {
+        "brand": "Velorim",
+        "model": "Dipirona 30 unidades",
+        "description": "Não há mais nem um",
+         "urgencia":"alta"
+    },
+    {
+        "brand": "Velorim",
+        "model": "Dipirona 30 unidades",
+        "description": "Não há mais nem um",
+         "urgencia":"media"
+    }
+]
 
 bicycles = [
-    bicycle,
     {
         "brand": "Bicyk",
         "model": "Hillcraft",
@@ -223,11 +228,19 @@ schema = (
 
 
 r = redis_interface(urls_host="redis")
+
 r.index_create("bicycle",schema)
+r.index_create("remedios",(
+    TextField("$.brand", as_name="brand"),
+    TextField("$.model", as_name="model"),
+    TextField("$.description", as_name="description"),
+    TextField("$.urgencia", as_name="urgencia"),
+))
 
 r.set_values(tag_name="bicycle", values=bicycles)
+r.set_values(tag_name="remedios", values=remedios)
 
-print("Meu DBUG: ",r.get_value(tag_name="bicycle"))
+print("Meu DBUG: ",r.get_value(tag_name="remedios", query="@urgencia:media"))
 
 # index = r.ft("idx:bicycle")
 
