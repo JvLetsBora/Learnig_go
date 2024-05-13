@@ -1,9 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/data/http/http_client.dart';
-import 'package:flutter_application_1/data/repositories/user.dart';
-import 'package:flutter_application_1/stores/user.dart';
 import 'package:http/http.dart' as http;
 
 class Task {
@@ -57,8 +54,29 @@ class User {
   }
 }
 
+Future<Task> createTask(String title, String description) async {
+  final response = await http.post(
+    Uri.parse('http://172.28.16.1:8000/users/1/tasks/'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'title': title,
+      'description': description
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    
+    return Task.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to create Task.');
+  }
+}
+
+
 Future<User> fetchUser(int userId) async {
-  final response = await http.get(Uri.parse('http://172.28.16.1:8000/users/$userId/'));
+  final response = await http.get(Uri.parse('http://172.28.16.1:8000/users/1/'));
 
   if (response.statusCode == 200) {
     return User.fromJson(jsonDecode(response.body));
@@ -77,46 +95,85 @@ class SegundaTela extends StatefulWidget {
 class _SegundaTelaState extends State<SegundaTela> {
   late Future<User> futureUser;
 
+  final TextEditingController _controllerTitle = TextEditingController();
+  final TextEditingController _controllerDescription = TextEditingController();
+  
+
+
+  Future<void> _createTaskAndRefreshList() async {
+    await createTask(_controllerTitle.text, _controllerDescription.text);
+    setState(() {
+      futureUser = fetchUser(1); // Recarrega os dados do usuário após criar uma nova tarefa
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    futureUser = fetchUser(1); // Replace '1' with the actual user id you want to fetch
+    futureUser = fetchUser(1);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Oi Mundo")),
-      body: Center(
-        child: FutureBuilder<User>(
-          future: futureUser,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (snapshot.hasData) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Email: ${snapshot.data!.email}'),
-                  const SizedBox(height: 20),
-                  const Text('Tasks:'),
-                  Column(
-                    children: snapshot.data!.tasks.map((task) {
+      body: FutureBuilder<User>(
+        future: futureUser,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (snapshot.hasData) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('Email: ${snapshot.data!.email}'),
+                const SizedBox(height: 20),
+                const Text('Tasks:'),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.tasks.length,
+                    itemBuilder: (context, index) {
+                      final task = snapshot.data!.tasks[index];
                       return ListTile(
                         title: Text(task.title),
                         subtitle: Text(task.description),
                       );
-                    }).toList(),
+                    },
                   ),
-                ],
-              );
-            } else {
-              return const Text('No data found');
-            }
-          },
-        ),
+                ),
+                const SizedBox(height: 20),
+                const Text('Create Task:'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _controllerTitle,
+                    decoration: const InputDecoration(hintText: 'Enter Title'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _controllerDescription,
+                    decoration: const InputDecoration(hintText: 'Enter Description'),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _createTaskAndRefreshList();
+                    });
+                    
+                  },
+                  child: const Text('Create Task'),
+                ),
+              ],
+            );
+          } else {
+            return const Text('No data found');
+          }
+        },
       ),
     );
   }

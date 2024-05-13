@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "Tasks",
     "collectionId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
-    "dateExported": "2024-04-29T20:46:17.989Z",
+    "dateExported": "2024-05-13T19:32:59.790Z",
     "version": "1.2",
     "folders": [
         {
@@ -80,7 +80,7 @@
             "method": "PUT",
             "sortNum": 40000,
             "created": "2024-04-29T20:45:52.733Z",
-            "modified": "2024-04-29T20:45:52.733Z",
+            "modified": "2024-05-11T19:13:40.447Z",
             "headers": [],
             "params": [
                 {
@@ -91,7 +91,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n    \"email\": \"ssss\",\n    \"password\": \"str\"\n}",
+                "raw": "{\n    \"email\": \"e e\",\n    \"password\": \"str\"\n}",
                 "form": []
             }
         },
@@ -104,7 +104,7 @@
             "method": "POST",
             "sortNum": 50000,
             "created": "2024-04-29T20:45:59.363Z",
-            "modified": "2024-04-29T20:45:59.363Z",
+            "modified": "2024-05-13T03:27:27.622Z",
             "headers": [],
             "params": [
                 {
@@ -115,7 +115,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"title\": \"Sei lá\",\n    \"description\": \"Boa!\"\n}\n",
+                "raw": "{\n  \"title\": \"Sei lá\",\n  \"description\": \"Boa!\"\n}\n",
                 "form": []
             }
         },
@@ -128,12 +128,12 @@
             "method": "GET",
             "sortNum": 60000,
             "created": "2024-04-29T20:46:06.074Z",
-            "modified": "2024-04-29T20:46:06.074Z",
+            "modified": "2024-05-13T11:35:14.360Z",
             "headers": [],
             "params": [
                 {
                     "name": "user_id",
-                    "value": "2",
+                    "value": "1",
                     "isPath": true
                 }
             ]
@@ -147,14 +147,14 @@
             "method": "POST",
             "sortNum": 70000,
             "created": "2024-04-29T20:46:13.726Z",
-            "modified": "2024-04-29T20:46:13.726Z",
+            "modified": "2024-05-13T03:27:35.115Z",
             "headers": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"email\":\"teste\",\n  \"password\":\"09\"\n}\n",
+                "raw": "{\n  \"email\":\"e e\",\n  \"password\":\"09\"\n}\n",
                 "form": []
             }
         }
     ],
-    "ref": "0T3M6ztZqabSAVny8-xhN3_a63M9BJ-CcwJ3fKh4b4EH3vge2AA9A3XnKn7hHQwtbYWZVNYOYgSwfIHPayOzVw"
+    "ref": "0T3M6ztZqabSAVny8-xhN9CMfm8_L-XBklNsjNbIymrejKsiVGPCqMeogfWk1uY1sC3JsIFfPyYhdXKrhKlU4A"
 }
