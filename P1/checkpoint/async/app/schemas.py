@@ -9,6 +9,9 @@ class TaskBase(BaseModel):
 class TaskCreate(TaskBase):
     pass
 
+class TaskDelete(BaseModel):
+    msg : str
+
 class UserUpdate(BaseModel):
     email: str
     password: str

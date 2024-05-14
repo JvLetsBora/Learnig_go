@@ -1,6 +1,7 @@
 from . import models, schemas
 
 from sqlalchemy import select
+from sqlalchemy.exc import NoResultFound
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from passlib.context import CryptContext
@@ -89,23 +90,46 @@ async def delete_user(db: AsyncSession, user_id: int):
         return user
     return None
 
-async def delete_task(db: AsyncSession, task_id: int):
-    task = (await db.scalars(select(models.Task).where(models.Task.id == task_id))).first() 
-    if task:
-        db.delete(task)
-        db.commit()
-        return task
-    return None
+async def delete_task(pool: asyncpg.Pool, task_id: int) -> dict: #DELETE FROM tasks WHERE id = :task_id;
+    try:
+        async with pool.acquire() as connection:
+        # Executa a consulta SQL diretamente
+            query = f"DELETE FROM tasks WHERE id = {task_id};"
+            rows = await connection.fetch(query)
+            task = [dict(row) for row in rows]
+            print(task)
+            return {
+                "msg": "Deletado com sucesso!"
+            }
 
-async def update_task(db: AsyncSession, task_id: int, task_data: schemas.TaskUpdate):
-    task = (await db.scalars(select(models.Task).where(models.Task.id == task_id))).first() 
-    if task:
-        for key, value in task_data.dict().items():
-            setattr(task, key, value)
-        db.commit()
-        db.refresh(task)
-        return task
-    return None
+    except NoResultFound:
+        return {
+            "msg": "Tarefa não encontrada!"
+        }
+    except Exception as e:
+        return {
+            "msg": f"Erro ao excluir a tarefa: {str(e)}"
+        }
+
+
+async def update_task(db: asyncpg.Pool, task_id: int, task_data: schemas.TaskUpdate):
+    try:
+        async with db.acquire() as connection:
+        # Executa a consulta SQL diretamente
+            query = f"UPDATE tasks SET title = '{task_data.title}', description = '{task_data.description}' WHERE id = {task_id};"
+            rows = await connection.fetch(query)
+            return {
+                "msg": "Atualizado com sucesso!"
+            }
+
+    except NoResultFound:
+        return {
+            "msg": "Tarefa não encontrada!"
+        }
+    except Exception as e:
+        return {
+            "msg": f"Erro ao atualizar a tarefa: {str(e)}"
+        }
 
 async def update_user(db: AsyncSession, user_id: int, user_update: schemas.UserUpdate):
     db_user = (await db.scalars(select(models.User).where(models.User.id == user_id))).first()

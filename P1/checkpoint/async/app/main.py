@@ -110,28 +110,24 @@ async def delete_user(user_id: int, db: AsyncSession = Depends(get_db_session)):
         raise HTTPException(status_code=404, detail="User not found")
     return await crud.delete_user(db=db, user_id=user_id)
 
-@app.delete("/tasks/{task_id}", response_model=schemas.Task)
-async def delete_task(task_id: int, db: AsyncSession = Depends(get_db_session)):
-    db_task = await crud.get_task(db, task_id=task_id)
-    if db_task is None:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return crud.delete_task(db=db, task_id=task_id)
+@app.delete("/tasks/{task_id}", response_model=schemas.TaskDelete)
+async def delete_task(task_id: int, db: asyncpg.Pool = Depends(get_pool_session)):
+    return await crud.delete_task(pool=db, task_id=task_id)
 
 
 @app.put("/users/{user_id}", response_model=schemas.User)
-async def update_user(user_id: int, user_update: schemas.UserUpdate, db: AsyncSession = Depends(get_db_session)):
+async def update_user(
+    user_id: int, user_update: schemas.UserUpdate, db: AsyncSession = Depends(get_db_session)
+    ):
     db_user = await crud.get_user(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return crud.update_user(db=db, user_id=user_id, user_update=user_update)
+    return await crud.update_user(db=db, user_id=user_id, user_update=user_update)
 
 
-@app.put("/tasks/{task_id}", response_model=schemas.Task)
-async def update_task(task_id: int, task_update: schemas.TaskUpdate, db: AsyncSession = Depends(get_db_session)):
-    db_task = await crud.get_task(db, task_id=task_id)
-    if db_task is None:
-        raise HTTPException(status_code=404, detail="Task not found")
-    return crud.update_task(db=db, task_id=task_id, task_update=task_update)
+@app.put("/tasks/{task_id}", response_model=dict)
+async def update_task(task_id: int, task_update: schemas.TaskUpdate, db: asyncpg.Pool = Depends(get_pool_session)):
+    return await crud.update_task(db=db, task_id=task_id, task_data=task_update)
 
 
 if __name__ == "__main__":
