@@ -56,7 +56,7 @@ class User {
 
 Future<Task> createTask(String title, String description) async {
   final response = await http.post(
-    Uri.parse('http://172.28.16.1:8000/users/1/tasks/'),
+    Uri.parse('http://172.29.96.1:8000/users/1/tasks/'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -75,8 +75,45 @@ Future<Task> createTask(String title, String description) async {
 }
 
 
+Future<Task> updateTask(int taskId, String title, String description) async {
+  final response = await http.put(
+    Uri.parse('http://172.29.96.1:8000/tasks/$taskId'),
+     headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'title': title,
+      'description': description
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    
+    return Task.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to create Task.');
+  }
+}
+
+Future<Task> deleteTask(int taskId) async {
+  final response = await http.delete(
+    Uri.parse('http://172.29.96.1:8000/tasks/$taskId'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    
+    return Task.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to create Task.');
+  }
+}
+
+
 Future<User> fetchUser(int userId) async {
-  final response = await http.get(Uri.parse('http://172.28.16.1:8000/users/1/'));
+  final response = await http.get(Uri.parse('http://172.29.96.1:8000/users/1/'));
 
   if (response.statusCode == 200) {
     return User.fromJson(jsonDecode(response.body));
@@ -102,6 +139,26 @@ class _SegundaTelaState extends State<SegundaTela> {
 
   Future<void> _createTaskAndRefreshList() async {
     await createTask(_controllerTitle.text, _controllerDescription.text);
+    setState(() {
+      futureUser = fetchUser(1); // Recarrega os dados do usuário após criar uma nova tarefa
+    });
+    _controllerTitle.text = "";
+    _controllerDescription.text = "";
+  }
+
+    Future<void> _updateTaskAndRefreshList(int id) async {
+    await updateTask(id, _controllerTitle.text , _controllerDescription.text);
+    setState(() {
+      futureUser = fetchUser(1); // Recarrega os dados do usuário após criar uma nova tarefa
+    });
+    _controllerTitle.text = "";
+    _controllerDescription.text = "";
+  }
+
+
+
+  Future<void> _deleteTaskAndRefreshList(int id) async {
+    await deleteTask(id);
     setState(() {
       futureUser = fetchUser(1); // Recarrega os dados do usuário após criar uma nova tarefa
     });
@@ -136,10 +193,35 @@ class _SegundaTelaState extends State<SegundaTela> {
                     itemCount: snapshot.data!.tasks.length,
                     itemBuilder: (context, index) {
                       final task = snapshot.data!.tasks[index];
-                      return ListTile(
-                        title: Text(task.title),
-                        subtitle: Text(task.description),
-                      );
+                      return 
+                      ListTile(
+                            style: ListTileStyle.list,
+                            title: Text(task.title, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 20, overflow: TextOverflow.fade)),
+                            subtitle: Text(task.description),
+                            trailing: Row( mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding( padding: const EdgeInsets.all(8.0), 
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      _deleteTaskAndRefreshList(task.id);
+                        
+                                    },
+                                  child: const Icon(Icons.delete),
+                              ) ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        _updateTaskAndRefreshList(task.id);
+                                                            
+                                      },
+                                    child: const Icon(Icons.edit),
+                                                                  ),
+                                  )
+                              ],
+                            ),
+                            
+                          );
                     },
                   ),
                 ),
@@ -178,3 +260,4 @@ class _SegundaTelaState extends State<SegundaTela> {
     );
   }
 }
+

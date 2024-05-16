@@ -14,6 +14,7 @@ class Task {
 
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
+      
       title: map['title'], 
       description: map['description'], 
       ownerId: map['owner_id'] // 'owner_id' em vez de 'ownerId' conforme fornecido na resposta JSON

@@ -1,5 +1,7 @@
 from . import models, schemas
 
+import asyncpg
+
 from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
 
@@ -25,9 +27,6 @@ async def get_task(db: AsyncSession, task_id: int):
 async def get_user_by_email(db: AsyncSession, email: str):
     return (await db.scalars(select(models.User).where(models.User.email == email))).first()
 
-
-import asyncpg
-
 async def get_users(pool: asyncpg.Pool, skip: int = 0, limit: int = 100):
     try:
         async with pool.acquire() as connection:
@@ -42,8 +41,6 @@ async def get_users(pool: asyncpg.Pool, skip: int = 0, limit: int = 100):
         print(f"Erro ao obter usuários: {e}")
         return None
     
-    
-
 async def create_user(db: AsyncSession, user: schemas.UserCreate):
     hashed_password = bcrypt_context.hash(user.password)
     db_user = models.User(email=user.email, hashed_password=hashed_password, is_active=True)
@@ -51,8 +48,6 @@ async def create_user(db: AsyncSession, user: schemas.UserCreate):
     await db.commit()  # Aguardar o commit
     await db.refresh(db_user)  # Aguardar o refresh
     return db_user
-
-
 
 async def get_tasks(pool: asyncpg.Pool, skip: int = 0, limit: int = 100):
     try:
@@ -68,11 +63,9 @@ async def get_tasks(pool: asyncpg.Pool, skip: int = 0, limit: int = 100):
         print(f"Erro ao obter usuários: {e}")
         return None
     
-
 async def get_token(db: AsyncSession, token: schemas.Token, user: schemas.TokenCreate):
     token = create_token(user)
     return token
-
 
 async def create_user_task(db: AsyncSession, task: schemas.TaskCreate, user_id: int):
     db_task = models.Task(title=task.title, description=task.description, owner_id=user_id)
@@ -80,7 +73,6 @@ async def create_user_task(db: AsyncSession, task: schemas.TaskCreate, user_id: 
     await db.commit()
     await db.refresh(db_task)
     return db_task
-
 
 async def delete_user(db: AsyncSession, user_id: int):
     user = (await db.scalars(select(models.User).where(models.User.id == user_id))).first()
@@ -90,7 +82,7 @@ async def delete_user(db: AsyncSession, user_id: int):
         return user
     return None
 
-async def delete_task(pool: asyncpg.Pool, task_id: int) -> dict: #DELETE FROM tasks WHERE id = :task_id;
+async def delete_task(pool: asyncpg.Pool, task_id: int) -> dict: 
     try:
         async with pool.acquire() as connection:
         # Executa a consulta SQL diretamente
@@ -110,7 +102,6 @@ async def delete_task(pool: asyncpg.Pool, task_id: int) -> dict: #DELETE FROM ta
         return {
             "msg": f"Erro ao excluir a tarefa: {str(e)}"
         }
-
 
 async def update_task(db: asyncpg.Pool, task_id: int, task_data: schemas.TaskUpdate):
     try:
