@@ -56,7 +56,7 @@ class User {
 
 Future<Task> createTask(String title, String description) async {
   final response = await http.post(
-    Uri.parse('http://172.29.96.1:8000/users/1/tasks/'),
+    Uri.parse('http://10.150.8.240:8000/users/1/tasks/'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -77,7 +77,7 @@ Future<Task> createTask(String title, String description) async {
 
 Future<Task> updateTask(int taskId, String title, String description) async {
   final response = await http.put(
-    Uri.parse('http://172.29.96.1:8000/tasks/$taskId'),
+    Uri.parse('http://10.150.8.240:8000/tasks/$taskId'),
      headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -97,7 +97,7 @@ Future<Task> updateTask(int taskId, String title, String description) async {
 
 Future<Task> deleteTask(int taskId) async {
   final response = await http.delete(
-    Uri.parse('http://172.29.96.1:8000/tasks/$taskId'),
+    Uri.parse('http://10.150.8.240:8000/tasks/$taskId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -113,7 +113,7 @@ Future<Task> deleteTask(int taskId) async {
 
 
 Future<User> fetchUser(int userId) async {
-  final response = await http.get(Uri.parse('http://172.29.96.1:8000/users/1/'));
+  final response = await http.get(Uri.parse('http://10.150.8.240:8000/users/1/'));
 
   if (response.statusCode == 200) {
     return User.fromJson(jsonDecode(response.body));
@@ -123,7 +123,10 @@ Future<User> fetchUser(int userId) async {
 }
 
 class SegundaTela extends StatefulWidget {
-  const SegundaTela({super.key});
+  const SegundaTela({super.key, required this.idUser});
+
+  final String idUser;
+  
 
   @override
   State<SegundaTela> createState() => _SegundaTelaState();

@@ -17,7 +17,7 @@ class Task {
       
       title: map['title'], 
       description: map['description'], 
-      ownerId: map['owner_id'] // 'owner_id' em vez de 'ownerId' conforme fornecido na resposta JSON
+      ownerId: map['owner_id']
     );
   }
 }
@@ -36,7 +36,7 @@ class UserModel {
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       email: map["email"], 
-      isActive: map["is_active"], // 'is_active' em vez de 'isActive' conforme fornecido na resposta JSON
+      isActive: map["is_active"], 
       tasks: List<Task>.from((map["tasks"] as List).map((task) => Task.fromMap(task)))
     );
   }
