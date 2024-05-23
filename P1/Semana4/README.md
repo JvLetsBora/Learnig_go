@@ -36,7 +36,31 @@ Esta atividade consiste em construir uma aplicação Flutter e um backend com mi
 - [Flutter](https://flutter.dev/docs/get-started/install)
 
 ### Passos para executar a aplicação
+
+**Backend**
+
 1. Clone o repositório:
    ```bash
    git clone https://github.com/JvLetsBora/Learnig_go.git
-   cd C:\Users\jvoli\Documents\Learnig_go\P1\checkpoint\async
+   
+2. Entre no repositório:
+   ```bash
+   cd Learnig_go\P1\checkpoint\async
+
+3. Suba o backend:
+   ```bash
+   docker compose up
+
+3. Suba a API:
+   ```bash
+   docker compose up
+
+**Frontend**
+
+4. Entre no frontend:
+   ```bash
+   cd Learnig_go\P1\flutter_point\flutter_application_1
+
+5. Execute o comando:
+   ```bash
+   flutter run
