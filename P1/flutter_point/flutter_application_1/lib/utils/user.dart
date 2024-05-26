@@ -1,26 +1,23 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/data/models/user.dart';
-import 'package:flutter_application_1/data/repositories/user.dart';
+import 'package:flutter_application_1/models/task.dart';
 
 class UserStore{
-  final IUserReposity reposity;
+  final TasksModel reposity;
 
 
   final ValueNotifier<bool> isLoading = ValueNotifier<bool>(true);
 
-  final ValueNotifier<UserModel> state = ValueNotifier<UserModel>(UserModel(email: "", isActive: false, tasks: [],));
+  final ValueNotifier<User> state = ValueNotifier<User>(User(id: 1, email: "", isActive: false, tasks: [],));
 
   final ValueNotifier<String> erro = ValueNotifier<String>("");
 
   UserStore({required this.reposity});
 
-  Future getUser() async {
+  Future getUser( int id ) async {
     isLoading.value = false;
 
     try {
-      final result = await reposity.getUsers();
+      final result = await reposity.fetchUser(id);
       state.value = result;
     } catch (e){
 

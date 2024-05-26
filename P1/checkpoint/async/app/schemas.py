@@ -48,8 +48,7 @@ class User(UserBase):
 
 
 class Token(BaseModel):
-    access_token: str
-    type_token: str
+    access_token: int
 
 class TokenCreate(BaseModel):
     id: int

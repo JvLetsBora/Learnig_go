@@ -1,11 +1,11 @@
 # Atividade Ponderada - Construção de Aplicativo Híbrido com Flutter
 
 ## Descrição
-Esta atividade consiste em construir uma aplicação Flutter e um backend com microsserviço. A Ultima versão do backend se encontra em: 'Learnig_go\P1\checkpoint\async'.
+Esta aplicação móvel permite ao usuário criar e gerenciar tarefas, além de processar imagens.
 
 ## Requisitos do Projeto
 - **Frontend**: Desenvolvido em Flutter.
-- **Backend:**: Desenvolvido em microsserviços.
+- **Backend:**: Microsserviços.
     - **Gerenciamento de tarefas**: Desenvolvido em microsserviços.
     - **Serviço de logs**: Desenvolvido em microsserviços.
 - **Contenerização**: Dockerfile e docker-compose.yml incluídos.
@@ -37,7 +37,7 @@ Esta atividade consiste em construir uma aplicação Flutter e um backend com mi
 
 ### Passos para executar a aplicação
 
-**Backend**
+Iniciando o backend.
 
 1. Clone o repositório:
    ```bash
@@ -55,7 +55,7 @@ Esta atividade consiste em construir uma aplicação Flutter e um backend com mi
    ```bash
    docker compose up
 
-**Frontend**
+Iniciando o frontend.
 
 4. Entre no frontend:
    ```bash
@@ -64,3 +64,5 @@ Esta atividade consiste em construir uma aplicação Flutter e um backend com mi
 5. Execute o comando:
    ```bash
    flutter run
+
+Tendo executado todos os passos corretamente, o resultado será o visto neste [vídeo](https://driv.dev/docs/get-started/install).

@@ -115,6 +115,12 @@ async def delete_task(task_id: int, db: asyncpg.Pool = Depends(get_pool_session)
     return await crud.delete_task(pool=db, task_id=task_id)
 
 
+@app.get("/users/auth/{email}/{password}", response_model=schemas.Token)
+async def get_token_user(
+    email: str, password:str, db: AsyncSession = Depends(get_db_session)
+    ):
+    return await crud.create_token(db=db, email=email, password=password)
+
 @app.put("/users/{user_id}", response_model=schemas.User)
 async def update_user(
     user_id: int, user_update: schemas.UserUpdate, db: AsyncSession = Depends(get_db_session)

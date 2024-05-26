@@ -4,17 +4,22 @@ import asyncpg
 
 from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
-
+from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from passlib.context import CryptContext
 bcrypt_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
 
-#UTILITS
-def create_token(user: schemas.TokenCreate) -> schemas.Token:
-    token = schemas.Token()
-    return token
 
+async def create_token(db:AsyncSession, email:str, password:str) -> schemas.Token:
+    user = await get_user_by_email(db=db, email=email)
+    
+    if bcrypt_context.verify(password,hash=user.hashed_password) != True:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    token = schemas.Token(
+        access_token=user.id
+    )
+    return token
 
 
 async def get_user(db: AsyncSession, user_id: int):
@@ -42,6 +47,7 @@ async def get_users(pool: asyncpg.Pool, skip: int = 0, limit: int = 100):
         return None
     
 async def create_user(db: AsyncSession, user: schemas.UserCreate):
+    
     hashed_password = bcrypt_context.hash(user.password)
     db_user = models.User(email=user.email, hashed_password=hashed_password, is_active=True)
     db.add(db_user)

@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   String _email = '';
   String _password = '';
   bool _isLoading = false;
-  String _idUser = '';
+  int _idUser = 1;
 
   Future<bool> _validateCredentials(String email, String password, BuildContext context) async {
     // Simula uma chamada de API para validar as credenciais
