@@ -20,16 +20,16 @@ if not os.path.exists(UPLOAD_DIR):
 @router.post("/upload/")
 async def upload_image(file: UploadFile = File(...)):
     try:
-        image = Image.open(file.file).convert("RGBA")  # Garantir que a imagem tenha 4 canais (RGBA)
+        image = Image.open(file.file).convert("RGBA")  
         image_array = np.array(image)
 
         # Separar os canais R, G, B e A
         r, g, b, a = image_array[:, :, 0], image_array[:, :, 1], image_array[:, :, 2], image_array[:, :, 3]
 
         # Kernel de convolução (3x3)
-        kernel = np.array([[0.2, 0.5, 0.5],
-                           [0.5, -0.2, 0.5],
-                           [0.5, 0.5, 0.2]])
+        kernel = np.array([[0.3, 0.3, -0.3],
+                           [0.3, -0.3, 0.3],
+                           [-0.3, 0.3, 0.3]])
 
         # Aplicar a convolução a cada canal separadamente
         r = convolve2d(r, kernel, mode='same', boundary='wrap')

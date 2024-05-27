@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "Tasks",
     "collectionId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
-    "dateExported": "2024-05-13T19:32:59.790Z",
+    "dateExported": "2024-05-27T12:39:33.386Z",
     "version": "1.2",
     "folders": [
         {
@@ -13,11 +13,25 @@
             "sortNum": 10000
         },
         {
+            "_id": "e56456a0-dfc3-4fd6-885a-e99a145e6201",
+            "name": "Auth",
+            "containerId": "9e001288-8853-4f85-89ce-d5192e0c764b",
+            "created": "2024-05-16T20:53:03.936Z",
+            "sortNum": 10000
+        },
+        {
             "_id": "6cabbfc4-cfb8-4e1a-b1fb-e2e340e1b859",
             "name": "Tasks",
             "containerId": "",
             "created": "2024-04-29T20:45:19.360Z",
             "sortNum": 30000
+        },
+        {
+            "_id": "e7c9a75d-fee7-47fa-a04a-1ced23f2fc0d",
+            "name": "images",
+            "containerId": "",
+            "created": "2024-05-26T20:57:21.674Z",
+            "sortNum": 50000
         }
     ],
     "requests": [
@@ -30,12 +44,12 @@
             "method": "DELETE",
             "sortNum": 10000,
             "created": "2024-04-29T20:45:29.752Z",
-            "modified": "2024-04-29T20:45:29.752Z",
+            "modified": "2024-05-17T20:54:38.367Z",
             "headers": [],
             "params": [
                 {
                     "name": "task_id",
-                    "value": "34",
+                    "value": "3",
                     "isPath": true
                 }
             ]
@@ -49,12 +63,12 @@
             "method": "DELETE",
             "sortNum": 20000,
             "created": "2024-04-29T20:45:35.191Z",
-            "modified": "2024-04-29T20:45:35.191Z",
+            "modified": "2024-05-15T20:12:25.142Z",
             "headers": [],
             "params": [
                 {
                     "name": "user_id",
-                    "value": "34",
+                    "value": "3",
                     "isPath": true
                 }
             ]
@@ -80,18 +94,18 @@
             "method": "PUT",
             "sortNum": 40000,
             "created": "2024-04-29T20:45:52.733Z",
-            "modified": "2024-05-11T19:13:40.447Z",
+            "modified": "2024-05-16T19:16:24.046Z",
             "headers": [],
             "params": [
                 {
                     "name": "user_id",
-                    "value": "1",
+                    "value": "13",
                     "isPath": true
                 }
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n    \"email\": \"e e\",\n    \"password\": \"str\"\n}",
+                "raw": "{\n    \"email\": \"Pelevsxuxa\",\n    \"password\": \"segredospecaminosos\"\n}",
                 "form": []
             }
         },
@@ -104,18 +118,18 @@
             "method": "POST",
             "sortNum": 50000,
             "created": "2024-04-29T20:45:59.363Z",
-            "modified": "2024-05-13T03:27:27.622Z",
+            "modified": "2024-05-26T20:16:05.994Z",
             "headers": [],
             "params": [
                 {
                     "name": "user_id",
-                    "value": "1",
+                    "value": "10",
                     "isPath": true
                 }
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"title\": \"Sei lá\",\n  \"description\": \"Boa!\"\n}\n",
+                "raw": "{\n  \"title\": \"Postar novo video\",\n  \"description\": \"Depois do congresso\"\n}\n",
                 "form": []
             }
         },
@@ -128,12 +142,12 @@
             "method": "GET",
             "sortNum": 60000,
             "created": "2024-04-29T20:46:06.074Z",
-            "modified": "2024-05-13T11:35:14.360Z",
+            "modified": "2024-05-26T20:15:39.392Z",
             "headers": [],
             "params": [
                 {
                     "name": "user_id",
-                    "value": "1",
+                    "value": "10",
                     "isPath": true
                 }
             ]
@@ -147,14 +161,116 @@
             "method": "POST",
             "sortNum": 70000,
             "created": "2024-04-29T20:46:13.726Z",
-            "modified": "2024-05-13T03:27:35.115Z",
+            "modified": "2024-05-26T19:58:02.954Z",
             "headers": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"email\":\"e e\",\n  \"password\":\"09\"\n}\n",
+                "raw": "{\n  \"email\":\"duda@gmail.com\",\n  \"password\":\"password\"\n}\n",
                 "form": []
+            }
+        },
+        {
+            "_id": "f3b12022-0b6c-4f4d-93bf-c5dc70aa1fd1",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "6cabbfc4-cfb8-4e1a-b1fb-e2e340e1b859",
+            "name": "Tasks",
+            "url": "http://127.0.0.1:8000/tasks/",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2024-05-15T20:21:53.337Z",
+            "modified": "2024-05-15T20:21:53.337Z",
+            "headers": []
+        },
+        {
+            "_id": "648639a2-00bc-4ed6-aa4b-dfb8f3a31fbc",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "6cabbfc4-cfb8-4e1a-b1fb-e2e340e1b859",
+            "name": "Task",
+            "url": "http://127.0.0.1:8000/tasks/{task_id}",
+            "method": "PUT",
+            "sortNum": 90000,
+            "created": "2024-05-15T20:31:13.989Z",
+            "modified": "2024-05-17T20:52:41.059Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "task_id",
+                    "value": "5",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\": \"MDS\",\n  \"description\": \"Depois do congresso\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "8411d365-0c67-4b47-a62d-657b822cbdb5",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "e56456a0-dfc3-4fd6-885a-e99a145e6201",
+            "name": "Auth",
+            "url": "http://172.21.240.1:8000/users/auth/{email}/{password}",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2024-05-16T20:59:58.308Z",
+            "modified": "2024-05-26T19:35:56.477Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "email",
+                    "value": "dd@gmail.com",
+                    "isPath": true
+                },
+                {
+                    "name": "password",
+                    "value": "password",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "7bde3689-b99a-4bae-94d3-c48cf84882a3",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "9e001288-8853-4f85-89ce-d5192e0c764b",
+            "name": "User",
+            "url": "http://127.0.0.1:8000/users/{user_id}",
+            "method": "DELETE",
+            "sortNum": 120000,
+            "created": "2024-05-26T20:10:03.939Z",
+            "modified": "2024-05-26T20:10:03.939Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "user_id",
+                    "value": "",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "8b76398c-e734-45b4-997a-4bebf6320e65",
+            "colId": "0e03eb7e-d1ae-4ab7-9553-261bf2e6a2d1",
+            "containerId": "e7c9a75d-fee7-47fa-a04a-1ced23f2fc0d",
+            "name": "Image",
+            "url": "http://127.0.0.1:8000/images/upload/",
+            "method": "POST",
+            "sortNum": 130000,
+            "created": "2024-05-27T11:48:04.984Z",
+            "modified": "2024-05-27T12:21:33.246Z",
+            "headers": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [],
+                "files": [
+                    {
+                        "name": "file",
+                        "value": "c:\\Users\\jvoli\\OneDrive\\Imagens\\Capturas de tela\\Captura de tela 2023-12-04 141333.png"
+                    }
+                ]
             }
         }
     ],
-    "ref": "0T3M6ztZqabSAVny8-xhN9CMfm8_L-XBklNsjNbIymrejKsiVGPCqMeogfWk1uY1sC3JsIFfPyYhdXKrhKlU4A"
+    "ref": "0T3M6ztZqabSAVny8-xhN1JCJB7_e4loSSDLz0UTTEeSdt1hGQ0EFPG1cJd3oHGPGbCNvKHa4QbdeEmDPqSolg"
 }

@@ -1,0 +1,64 @@
+version: '3'
+
+services:
+
+  api_async:
+    build: ../checkpoint/async
+    container_name: api_async
+    command: bash -c "cd app/ && alembic upgrade head && cd ../ && uvicorn app.main:app --host 0.0.0.0 --port 8000" 
+    environment:
+      PYTHONPATH: .
+      DATABASE_URL: "postgresql+asyncpg://username:password@postgres_async:5432/postgres_async"
+    ports:
+      - '8000:8000'
+    restart: "no"
+    depends_on:
+      postgres_async:
+        condition: service_healthy
+
+  logging:
+    build: ./logging/
+    container_name: logging
+
+    ports:
+      - '8003:8003'
+    restart: "no"
+    depends_on:
+      postgres_async:
+        condition: service_healthy
+
+  postgres_async:
+    container_name: postgres_async
+    image: postgres:16.2-alpine
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres_async
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U username"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    restart: always
+
+  adminer_async:
+    image: adminer
+    restart: always
+    ports:
+      - 8089:8080
+
+  redis:
+    container_name: redis-stack-server
+    image: redis:7.2.4-alpine
+    restart: always
+    ports:
+      - 6379:6379
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "8001:80"

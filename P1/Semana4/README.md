@@ -51,12 +51,6 @@ Iniciando o backend.
    ```bash
    docker compose up
 
-3. Suba a API:
-   ```bash
-   docker compose up
-
-Iniciando o frontend.
-
 4. Entre no frontend:
    ```bash
    cd Learnig_go\P1\flutter_point\flutter_application_1
@@ -65,4 +59,4 @@ Iniciando o frontend.
    ```bash
    flutter run
 
-Tendo executado todos os passos corretamente, o resultado será o visto neste [vídeo](https://driv.dev/docs/get-started/install).
+Tendo executado todos os passos corretamente, o resultado esperado será aquele visto neste [vídeo](https://driv.dev/docs/get-started/install).
