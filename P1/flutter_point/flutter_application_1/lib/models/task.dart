@@ -55,7 +55,7 @@ class User {
 
 
 class TasksModel{
-  String host = "";
+  String host = "172.21.240.1";
   
 Future<Task> createTask( int userId, String title, String description) async {
   final response = await http.post(

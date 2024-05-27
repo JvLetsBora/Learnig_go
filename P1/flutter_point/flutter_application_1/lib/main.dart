@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/new_user.dart';
 import 'package:flutter_application_1/pages/segunda_pagina.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     // Simula uma chamada de API para validar as credenciais
     final response = await Future.delayed(const Duration(seconds: 2), () {
       return http.get(
-        Uri.parse('http://172.29.96.1:8000/auth/$email/$password'),
+        Uri.parse('http://172.21.240.1:8000/users/auth/$email/$password'),
         headers: {'Content-Type': 'application/json'},
       );
     });
@@ -106,6 +107,14 @@ class _HomePageState extends State<HomePage> {
                                 _password = value!;
                               },
                             ),
+                            TextButton(
+                              onPressed: () =>{
+                                Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const NewUser()),
+                                    )
+                              }
+                            , child: const Text("Criar novo usuário"))
                           ],
                         ),
                       ),
@@ -151,3 +160,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

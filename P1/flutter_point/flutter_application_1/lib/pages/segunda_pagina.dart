@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/components/image_uploder.dart';
 import 'package:flutter_application_1/components/task_list.dart';
 import 'package:flutter_application_1/controllers/task.dart';
 import 'package:flutter_application_1/models/task.dart';
@@ -17,7 +18,7 @@ class SegundaTela extends StatefulWidget {
 
 class _SegundaTelaState extends State<SegundaTela> {
   late Future<User> futureUser;
-
+  int _selectedIndex = 0;
   final TasksController _controller = TasksController();
   final TextEditingController _controllerTitle = TextEditingController();
   final TextEditingController _controllerDescription = TextEditingController();
@@ -29,6 +30,12 @@ class _SegundaTelaState extends State<SegundaTela> {
     _controllerTitle.text = "";
     _controllerDescription.text = "";
     
+  }
+
+    void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
     void _deleteTaskAndRefreshList(int id) {
@@ -55,8 +62,9 @@ class _SegundaTelaState extends State<SegundaTela> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Oi Mundo")),
-      body: FutureBuilder<User>(
+      appBar: _selectedIndex == 0
+          ? AppBar(title: const Text("Editor de tasks")) : AppBar(title: const Text("Editor de Imagens")) ,
+      body: _selectedIndex == 0 ? FutureBuilder<User>(
         future: futureUser,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -114,6 +122,21 @@ class _SegundaTelaState extends State<SegundaTela> {
             return const Text('No data found');
           }
         },
+      ) : const ImageUploader(),
+    bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.task),
+            label: 'Tasks',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.image),
+            label: 'Imagens',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
       ),
     );
   }

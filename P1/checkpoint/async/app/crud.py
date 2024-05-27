@@ -85,7 +85,9 @@ async def delete_user(db: AsyncSession, user_id: int):
     if user:
         await db.delete(user)
         await db.commit()
-        return user
+        return {
+        "msg":"Deletado com sucesso"
+    }
     return None
 
 async def delete_task(pool: asyncpg.Pool, task_id: int) -> dict: 

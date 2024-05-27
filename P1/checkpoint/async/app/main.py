@@ -2,16 +2,14 @@ import logging
 import sys
 from contextlib import asynccontextmanager
 
-
-
-# Comando para executar o arquivo .sh
-
 import asyncpg
 import uvicorn
 from app.config import settings
+from app.images.rotas import router as imagesRouter
 from app.databaseTeste import sessionmanager, get_db_session, AsyncSession
 from fastapi import Depends, FastAPI, HTTPException
 from . import crud,  schemas
+
 
 
 
@@ -58,7 +56,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan, title=settings.project_name, docs_url="/api/docs")
-
+app.include_router(imagesRouter)
 
 @app.get("/")
 async def root():
@@ -103,7 +101,7 @@ async def read_tasks(skip: int = 0, limit: int = 100, db: asyncpg.Pool = Depends
     return tasks
 
 
-@app.delete("/users/{user_id}", response_model=schemas.User)
+@app.delete("/users/{user_id}", response_model=schemas.UserDelete)
 async def delete_user(user_id: int, db: AsyncSession = Depends(get_db_session)):
     db_user = await crud.get_user(db, user_id=user_id)
     if db_user is None:

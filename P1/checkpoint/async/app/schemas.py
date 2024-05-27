@@ -12,6 +12,9 @@ class TaskCreate(TaskBase):
 class TaskDelete(BaseModel):
     msg : str
 
+class UserDelete(BaseModel):
+    msg : str
+
 class UserUpdate(BaseModel):
     email: str
     password: str
