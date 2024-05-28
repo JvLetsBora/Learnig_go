@@ -37,11 +37,13 @@ Esta aplicação móvel permite ao usuário criar e gerenciar tarefas, além de 
 
 ### Passos para executar a aplicação
 
-Iniciando o backend.
+Abra o terminal, navegue até a pasta onde deseja clonar o projeto e siga os passos abaixo:
 
 1. Clone o repositório:
    ```bash
    git clone https://github.com/JvLetsBora/Learnig_go.git
+
+**Iniciando Backend**
    
 2. Entre no repositório:
    ```bash
@@ -50,6 +52,10 @@ Iniciando o backend.
 3. Suba o backend:
    ```bash
    docker compose up
+
+**Iniciando Frontend**
+
+Em outro terminal, execute as instruções:
 
 4. Entre no frontend:
    ```bash
