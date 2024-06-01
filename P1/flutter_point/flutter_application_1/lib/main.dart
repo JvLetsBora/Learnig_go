@@ -5,6 +5,8 @@ import 'package:flutter_application_1/pages/segunda_pagina.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 

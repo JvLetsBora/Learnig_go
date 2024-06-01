@@ -25,11 +25,11 @@ class User {
 
 
 class UserModel{
-  String host = "172.21.240.1";
+  String host = "172.29.192.1";
   
 Future<int> createUser( String email,String password ) async {
   final response = await http.post(
-    Uri.parse('http://$host:8000/users/'),
+    Uri.parse('http://$host:8001/api/users/'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -50,7 +50,7 @@ Future<int> createUser( String email,String password ) async {
 
 Future<User> updateUser(int id, String password, String email) async {
   final response = await http.put(
-    Uri.parse('http://$host:8000/users/$id'),
+    Uri.parse('http://$host:8001/api/users/$id'),
      headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -71,7 +71,7 @@ Future<User> updateUser(int id, String password, String email) async {
 
 Future<int> deleteUser(int id) async {
   final response = await http.delete(
-    Uri.parse('http://$host:8000/users/$id'),
+    Uri.parse('http://$host:8001/api/users/$id'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

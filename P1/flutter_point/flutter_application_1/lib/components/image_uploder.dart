@@ -1,5 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/components/notifi.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
@@ -16,6 +16,7 @@ class _ImageUploaderState extends State<ImageUploader> {
   final ImagePicker _picker = ImagePicker();
   bool _isLoading = false;
   Image? _processedImage;
+    final _showNotification = NotificationService();
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -37,7 +38,7 @@ class _ImageUploaderState extends State<ImageUploader> {
 
     final request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://172.21.240.1:8000/images/upload/'),
+      Uri.parse('http://172.29.192.1:8001/api/images/upload/'),
     );
     request.files.add(await http.MultipartFile.fromPath('file', _image!.path));
 
@@ -50,6 +51,7 @@ class _ImageUploaderState extends State<ImageUploader> {
     if (response.statusCode == 200) {
       final responseData = await response.stream.toBytes();
       setState(() {
+        _showNotification.showNotification(id: 0,title:  "Teste OI",body:  "Muinto texto já que é o body",payLoad:  "Payback bitch!");
         _processedImage = Image.memory(responseData);
       });
 
