@@ -69,4 +69,4 @@ Em outro terminal, execute as instruções:
    ```bash
    flutter run
 
-Tendo executado todos os passos corretamente, o resultado esperado será aquele visto neste [vídeo](https://driv.dev/docs/get-started/install).
+Tendo executado todos os passos corretamente, o resultado esperado será aquele visto neste [vídeo](https://drive.google.com/file/d/1qfsZfYYpSV-ljiRJv2_kzYVMXUNUQ0Tf/view?usp=sharing).

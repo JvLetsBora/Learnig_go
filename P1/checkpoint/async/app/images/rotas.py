@@ -27,9 +27,9 @@ async def upload_image(file: UploadFile = File(...)):
         r, g, b, a = image_array[:, :, 0], image_array[:, :, 1], image_array[:, :, 2], image_array[:, :, 3]
 
         # Kernel de convolução (3x3)
-        kernel = np.array([[0.3, 0.3, -0.3],
-                           [0.3, -0.3, 0.3],
-                           [-0.3, 0.3, 0.3]])
+        kernel = np.array([[0.1, 0.3, -0.1],
+                           [0.3, -0.8, 0.3],
+                           [-0.1, 0.3, 0.1]])
 
         # Aplicar a convolução a cada canal separadamente
         r = convolve2d(r, kernel, mode='same', boundary='wrap')
