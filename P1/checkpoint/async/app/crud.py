@@ -13,7 +13,8 @@ bcrypt_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
 async def create_token(db:AsyncSession, email:str, password:str) -> schemas.Token:
     user = await get_user_by_email(db=db, email=email)
-    
+    if user == None:
+        raise HTTPException(status_code=401, detail="Usuário Não encontado")
     if bcrypt_context.verify(password,hash=user.hashed_password) != True:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = schemas.Token(
@@ -30,7 +31,8 @@ async def get_task(db: AsyncSession, task_id: int):
     return (await db.scalars(select(models.Task).where(models.Task.id == task_id))).first() 
 
 async def get_user_by_email(db: AsyncSession, email: str):
-    return (await db.scalars(select(models.User).where(models.User.email == email))).first()
+    user = (await db.scalars(select(models.User).where(models.User.email == email))).first()
+    return user
 
 async def get_users(pool: asyncpg.Pool, skip: int = 0, limit: int = 100):
     try:

@@ -11,7 +11,7 @@ services:
       DATABASE_URL: "postgresql+asyncpg://username:password@postgres_async:5432/postgres_async"
     ports:
       - '8000:8000'
-    restart: "no"
+    restart: on-failure
     depends_on:
       postgres_async:
         condition: service_healthy
@@ -22,7 +22,7 @@ services:
 
     ports:
       - '8003:8003'
-    restart: "no"
+    restart: on-failure
     depends_on:
       postgres_async:
         condition: service_healthy
@@ -30,8 +30,8 @@ services:
   postgres_async:
     container_name: postgres_async
     image: postgres:16.2-alpine
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+    # volumes:
+      # - ./postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
@@ -60,5 +60,6 @@ services:
 
   gateway:
     build: ./gateway
+    restart: on-failure
     ports:
       - "8001:80"

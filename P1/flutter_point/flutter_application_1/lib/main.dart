@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/new_user.dart';
 import 'package:flutter_application_1/pages/segunda_pagina.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';  
 
-void main() {
+Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
+  
+  await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());
 }
@@ -39,16 +43,17 @@ class _HomePageState extends State<HomePage> {
   bool _isLoading = false;
   int _idUser = 1;
 
-  Future<bool> _validateCredentials(String email, String password, BuildContext context) async {
-    // Simula uma chamada de API para validar as credenciais
-    final response = await Future.delayed(const Duration(seconds: 2), () {
-      return http.get(
-        Uri.parse('http://172.21.240.1:8000/users/auth/$email/$password'),
-        headers: {'Content-Type': 'application/json'},
-      );
-    });
+  // Access the HOST environment variable
+  final String host = dotenv.env['HOST'] ?? '172.29.192.1';
 
-    // Se a resposta da API for bem-sucedida e as credenciais forem válidas, retorne true
+  Future<bool> _validateCredentials(String email, String password, BuildContext context) async {
+    // Simulate an API call to validate the credentials
+    final response = await http.get(
+      Uri.parse('http://$host:8001/api/users/auth/$email/$password'),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    // If the API response is successful and the credentials are valid, return true
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
       _idUser = jsonResponse['access_token'];
@@ -110,13 +115,14 @@ class _HomePageState extends State<HomePage> {
                               },
                             ),
                             TextButton(
-                              onPressed: () =>{
+                              onPressed: () {
                                 Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const NewUser()),
-                                    )
-                              }
-                            , child: const Text("Criar novo usuário"))
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const NewUser()),
+                                );
+                              },
+                              child: const Text("Criar novo usuário"),
+                            ),
                           ],
                         ),
                       ),
@@ -162,4 +168,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

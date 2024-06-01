@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -55,9 +56,20 @@ class User {
 
 
 class TasksModel{
-  String host = "172.29.192.1";
+
+  String host = dotenv.env['HOST'] ?? '172.29.192.1';
+
+  Future<String> startEnv() async { 
+    await dotenv.load(fileName: ".env");
+    host = dotenv.env['HOST'] ?? '172.29.192.1';
+    return dotenv.env['HOST'] ?? '172.29.192.1';
+  }
   
+  
+
+
 Future<Task> createTask( int userId, String title, String description) async {
+  host = await startEnv();
   final response = await http.post(
     Uri.parse('http://$host:8001/api/users/$userId/tasks/'),
     headers: <String, String>{
@@ -79,6 +91,7 @@ Future<Task> createTask( int userId, String title, String description) async {
 
 
 Future<Task> updateTask(int taskId, String title, String description) async {
+  host = await startEnv();
   final response = await http.put(
     Uri.parse('http://$host:8001/api/tasks/$taskId'),
      headers: <String, String>{
@@ -99,6 +112,7 @@ Future<Task> updateTask(int taskId, String title, String description) async {
 }
 
 Future<Task> deleteTask(int taskId) async {
+  host = await startEnv();
   final response = await http.delete(
     Uri.parse('http://$host:8001/api/tasks/$taskId'),
     headers: <String, String>{
@@ -116,7 +130,8 @@ Future<Task> deleteTask(int taskId) async {
 
 
 Future<User> fetchUser(int userId) async {
-  final response = await http.get(Uri.parse('http://$host:8001/api/users/$userId/'));
+  host = await startEnv();
+  final response = await http.get(Uri.parse('http://$host:8001/api/users/$userId'));
 
   if (response.statusCode == 200) {
     return User.fromJson(jsonDecode(response.body));

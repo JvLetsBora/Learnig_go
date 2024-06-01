@@ -8,7 +8,6 @@ import 'package:flutter_application_1/models/task.dart';
 
 class SegundaTela extends StatefulWidget {
   const SegundaTela({super.key, required this.idUser});
-
   final int idUser;
   
 
@@ -18,6 +17,7 @@ class SegundaTela extends StatefulWidget {
 
 class _SegundaTelaState extends State<SegundaTela> {
   late Future<User> futureUser;
+  
   int _selectedIndex = 0;
   final TasksController _controller = TasksController();
   final TextEditingController _controllerTitle = TextEditingController();
@@ -56,6 +56,7 @@ class _SegundaTelaState extends State<SegundaTela> {
   @override
   void initState() {
     super.initState();
+    _controller.startEnv();
     futureUser = _controller.fetchUser(widget.idUser);
   }
 

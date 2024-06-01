@@ -3,6 +3,10 @@ import 'package:flutter_application_1/models/task.dart';
 
 class TasksController {
   final TasksModel _model = TasksModel();
+
+  Future<void> startEnv() async{
+     await _model.startEnv();
+  }
   
   Future<User> fetchUser(int id) async{
     return _model.fetchUser(id);

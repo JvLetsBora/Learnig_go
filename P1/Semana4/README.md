@@ -47,9 +47,13 @@ Abra o terminal, navegue até a pasta onde deseja clonar o projeto e siga os pas
    
 2. Entre no repositório:
    ```bash
-   cd Learnig_go\P1\checkpoint\async
+   cd Learnig_go\P1\Semana4
 
-3. Suba o backend:
+3. Configurar as variáveis de ambiente:
+   ```bash
+   cmd.exe /c out.bat
+
+4. Suba o backend:
    ```bash
    docker compose up
 
@@ -57,11 +61,11 @@ Abra o terminal, navegue até a pasta onde deseja clonar o projeto e siga os pas
 
 Em outro terminal, execute as instruções:
 
-4. Entre no frontend:
+5. Entre no frontend:
    ```bash
    cd Learnig_go\P1\flutter_point\flutter_application_1
 
-5. Execute o comando:
+6. Execute o comando:
    ```bash
    flutter run
 

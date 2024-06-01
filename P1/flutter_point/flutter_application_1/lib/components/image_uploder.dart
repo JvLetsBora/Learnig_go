@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/notifi.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 
+
+
+
+Future main() async{
+  await dotenv.load(fileName: ".env");
+
+
+}
+
+
 class ImageUploader extends StatefulWidget {
   const ImageUploader({super.key});
+  
 
   @override
   State<ImageUploader> createState() => _ImageUploaderState();
@@ -30,6 +42,7 @@ class _ImageUploaderState extends State<ImageUploader> {
   }
 
   Future<void> _uploadImage() async {
+    final String host = dotenv.env['HOST'] ?? '172.29.192.1';
     if (_image == null) return;
 
     setState(() {
@@ -38,7 +51,7 @@ class _ImageUploaderState extends State<ImageUploader> {
 
     final request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://172.29.192.1:8001/api/images/upload/'),
+      Uri.parse('http://$host:8001/api/images/upload/'),
     );
     request.files.add(await http.MultipartFile.fromPath('file', _image!.path));
 
@@ -51,7 +64,7 @@ class _ImageUploaderState extends State<ImageUploader> {
     if (response.statusCode == 200) {
       final responseData = await response.stream.toBytes();
       setState(() {
-        _showNotification.showNotification(id: 0,title:  "Teste OI",body:  "Muinto texto já que é o body",payLoad:  "Payback bitch!");
+        _showNotification.showNotification(id: 0,title:  "Todo App",body:  "Imagem processada com sucesso",payLoad:  "Payback bitch!");
         _processedImage = Image.memory(responseData);
       });
 

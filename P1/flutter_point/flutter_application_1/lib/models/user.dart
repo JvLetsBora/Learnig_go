@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';  
 
 class User {
   final String email;
@@ -22,12 +23,18 @@ class User {
   }
 }
 
+Future main() async{
+  await dotenv.load(fileName: ".env");
 
+
+}
 
 class UserModel{
-  String host = "172.29.192.1";
+  final String host = dotenv.env['HOST'] ?? '172.29.192.1';
+  
   
 Future<int> createUser( String email,String password ) async {
+  
   final response = await http.post(
     Uri.parse('http://$host:8001/api/users/'),
     headers: <String, String>{
