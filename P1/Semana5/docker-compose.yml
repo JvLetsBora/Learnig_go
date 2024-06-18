@@ -1,11 +1,11 @@
 version: "3.8"
 
 services:
-  backend:
+  api_async:
     build: ../checkpoint/async/
     ports:
       - "8000:8000"
-    container_name: backend
+    container_name: api_async
     volumes:
       - ./logs:/app/logs
 
@@ -19,7 +19,7 @@ services:
     volumes:
       - ./logs:/app/app/logs
     ports:
-      - '8001:8001'
+      - '8003:8003'
     restart: on-failure
 
 
@@ -29,7 +29,7 @@ services:
     volumes:
       - ./logs:/src/logs
     depends_on:
-      - backend
+      - api_async
       - elasticsearch
       - kibana
     network_mode: "host"
@@ -48,7 +48,12 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch
+    # volumes:
+    #     elasticsearch_data:
+    #         driver: local
 
-volumes:
-    elasticsearch_data:
-        driver: local
+  gateway:
+    build: ../Semana4/gateway
+    restart: on-failure
+    ports:
+      - "8001:80"
