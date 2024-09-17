@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    database_url: str
+    database_url: str = 'postgresql+asyncpg://username:password@postgres_async:5432/postgres_async'
     echo_sql: bool = True
     test: bool = False
     project_name: str = "My FastAPI project"
