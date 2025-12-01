@@ -1,10 +1,12 @@
-import threading, queue, time, serial, pygame
+import threading, queue, time, socket, pygame
+import random
 
-SERIAL_PORT = "COM3"
-BAUD_RATE = 115200
-SERIAL_TIMEOUT = 0.1
+# ===== CONFIG =====
+PICO_HOST = "192.168.43.206"
+PICO_PORT = 8009
 RECONNECT_INTERVAL = 2.0
 SEND_THROTTLE_MS = 40
+# ==================
 
 WIDTH, HEIGHT = 900, 600
 FPS = 60
@@ -15,75 +17,111 @@ WIN_TIME = 8.0
 pico_value = 0.0
 pico_lock = threading.Lock()
 cmd_queue = queue.Queue()
-rx_queue = queue.Queue()
-ser_lock = threading.Lock()
+rx_queue = queue.Queue(maxsize=200)
+sock_lock = threading.Lock()
 running = True
-serial_conn = None
+
 _last_send_ms = 0
 _last_send_ms_lock = threading.Lock()
 
+# Conexão e gerenciamento do socket
+sock = None
 
-def serial_reader_thread(port, baud, timeout, rx_q):
-    global serial_conn, running, pico_value
+
+def read_with_noise(value, noise_level=0.05):
+    noise = (random.random() * 2 - 1) * noise_level
+    return value * (1 + noise)
+
+
+
+
+
+def tcp_reader_thread(host, port, rx_q):
+    global sock, running, pico_value
     while running:
-        try:
-            if serial_conn is None:
+        if sock is None:
+            try:
+                s = socket.socket()
+                s.settimeout(5.0)
+                s.connect((host, port))
+                s.settimeout(0.5)  # timeout para recv não bloquear muito
+                with sock_lock:
+                    sock = s
+                print("Conectado ao Pico:", host, port)
+            except Exception as e:
+                # falha ao conectar
                 try:
-                    serial_conn = serial.Serial(port, baud, timeout=timeout)
-                    try:
-                        serial_conn.reset_input_buffer()
-                        serial_conn.reset_output_buffer()
-                    except Exception:
-                        pass
-                except Exception:
-                    serial_conn = None
-                    time.sleep(RECONNECT_INTERVAL)
-                    continue
-
-            line_bytes = serial_conn.readline()
-            if not line_bytes:
+                    s.close()
+                except:
+                    pass
+                sock = None
+                # aguardar e tentar de novo
+                time.sleep(RECONNECT_INTERVAL)
                 continue
 
+        # se conectado, leia dados
+        try:
+            data = sock.recv(4096)
+            if not data:
+                # desconectou
+                print("Desconectado pelo servidor")
+                try:
+                    sock.close()
+                except:
+                    pass
+                sock = None
+                time.sleep(RECONNECT_INTERVAL)
+                continue
+
+            # dividir por linhas (pode vir várias linhas)
             try:
-                line = line_bytes.decode('utf-8', errors='ignore').strip()
+                text = data.decode('utf-8', errors='ignore')
             except:
-                line = repr(line_bytes)
+                text = repr(data)
 
+            lines = text.split("\n")
+            for line in lines:
+                if not line:
+                    continue
+                # coloca na fila para UI/log
+                try:
+                    rx_q.put_nowait(line)
+                except queue.Full:
+                    pass
+
+                # interpreta VAL:
+                if line.upper().startswith("VAL:"):
+                    parts = line.split(":", 1)
+                    if len(parts) == 2:
+                        try:
+                            v = float(parts[1])
+                            with pico_lock:
+                                pico_value = read_with_noise(v, 0.15)
+                        except:
+                            pass
+
+        except socket.timeout:
+            # sem dados, continue loop para checar comandos a enviar
+            pass
+        except Exception as e:
+            print("Erro no recv:", e)
             try:
-                rx_q.put_nowait(line)
-            except queue.Full:
-                pass
-
-            if line.upper().startswith("VAL:"):
-                parts = line.split(":", 1)
-                if len(parts) == 2:
-                    try:
-                        v = float(parts[1])
-                        with pico_lock:
-                            pico_value = v
-                    except:
-                        pass
-
-        except Exception:
-            try:
-                if serial_conn:
-                    serial_conn.close()
+                if sock:
+                    sock.close()
             except:
                 pass
-            serial_conn = None
+            sock = None
             time.sleep(RECONNECT_INTERVAL)
 
     try:
-        if serial_conn:
-            serial_conn.close()
+        if sock:
+            sock.close()
     except:
         pass
-    serial_conn = None
+    sock = None
 
-
-
-def serial_writer_thread():
-    global serial_conn, running
+def tcp_writer_thread():
+    global sock, running
     while running:
         try:
             cmd = cmd_queue.get(timeout=0.1)
@@ -92,7 +130,7 @@ def serial_writer_thread():
 
         if not isinstance(cmd, (bytes, bytearray)):
             try:
-                cmd = str(cmd).encode()
+                cmd = str(cmd).encode('utf-8')
             except:
                 continue
 
@@ -100,35 +138,31 @@ def serial_writer_thread():
         start_time = time.time()
 
         while running and not wrote:
-            if serial_conn is None:
+            if sock is None:
                 time.sleep(0.05)
                 if time.time() - start_time > 5.0:
                     break
                 continue
 
             try:
-                with ser_lock:
-                    serial_conn.write(cmd)
-                    try:
-                        serial_conn.flush()
-                    except Exception:
-                        pass
+                with sock_lock:
+                    sock.sendall(cmd)
                 wrote = True
-            except Exception:
+            except Exception as e:
+                print("Erro ao enviar:", e)
                 try:
-                    serial_conn.close()
+                    if sock:
+                        sock.close()
                 except:
                     pass
-                serial_conn = None
+                sock = None
                 time.sleep(0.1)
 
         time.sleep(0.01)
 
-
 def send_command_ascii(line_str):
     global _last_send_ms
     now_ms = int(time.time() * 1000)
-
     with _last_send_ms_lock:
         if now_ms - _last_send_ms < SEND_THROTTLE_MS:
             return False
@@ -143,12 +177,12 @@ def send_command_ascii(line_str):
     except queue.Full:
         return False
 
-
 def led_on():  send_command_ascii("LED:ON")
 def led_off(): send_command_ascii("LED:OFF")
 def start_game(): send_command_ascii("COMMAND:START_GAME")
+def win(): send_command_ascii("COMMAND:WIN")
 
-
+# ----------------- UI / Game (mantive seu código)
 def run_menu():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -188,7 +222,6 @@ def run_menu():
 
         pygame.display.flip()
         clock.tick(60)
-
 
 def run_game():
     global running, pico_value
@@ -260,20 +293,19 @@ def run_game():
     time.sleep(0.05)
     pygame.quit()
 
-
+# ====== MAIN ======
 if __name__ == "__main__":
-    t_reader = threading.Thread(target=serial_reader_thread,
-                                args=(SERIAL_PORT, BAUD_RATE, SERIAL_TIMEOUT, rx_queue),
-                                daemon=True)
-    t_writer = threading.Thread(target=serial_writer_thread, daemon=True)
+    t_reader = threading.Thread(target=tcp_reader_thread, args=(PICO_HOST, PICO_PORT, rx_queue), daemon=True)
+    t_writer = threading.Thread(target=tcp_writer_thread, daemon=True)
 
     t_reader.start()
     t_writer.start()
 
-    print("\n Testando conexão serial...")
+    print("\n Testando conexão TCP com o Pico...")
 
+    # envia PING
     send_command_ascii("COMMAND:PING")
-    time.sleep(1)
+    time.sleep(1.0)
 
     test_ok = False
     while not rx_queue.empty():
@@ -285,8 +317,7 @@ if __name__ == "__main__":
     if test_ok:
         print("Conexão OK! Pico respondeu ao PING.\n")
     else:
-        print("Pico NÃO respondeu ao PING.\n")
-
+        print("Pico NÃO respondeu ao PING. Verifique IP/Firewall/Se está conectado.\n")
 
     try:
         run_menu()
