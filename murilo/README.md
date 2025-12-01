@@ -1,4 +1,4 @@
-# 🕹️ **Equilibre o Núcleo**
+# **Equilibre o Núcleo**
 
 ### **Entrega – Projeto com Integração Hardware** — *28/11/2025*
 
@@ -6,7 +6,7 @@
 
 ---
 
-## 🎯 **Objetivo do Projeto**
+## **Objetivo do Projeto**
 
 Desenvolver um **jogo interativo** onde o jogador deve **equilibrar o núcleo** mantendo o valor lido pelo potenciômetro dentro da faixa **40% a 60%**.
 
@@ -14,7 +14,7 @@ A leitura é feita pelo **Raspberry Pi Pico W**, enviada via **TCP/WiFi** para o
 
 ---
 
-## 🧩 **Resumo do Funcionamento**
+## **Resumo do Funcionamento**
 
 * O **Pico W** lê continuamente um potenciômetro (ADC).
 * Mapeia o valor de **0–65535 → 0–100%**.
@@ -33,7 +33,7 @@ A leitura é feita pelo **Raspberry Pi Pico W**, enviada via **TCP/WiFi** para o
 
 ---
 
-## 📁 **Estrutura do Projeto**
+## **Estrutura do Projeto**
 
 ```
 .
@@ -51,15 +51,15 @@ A leitura é feita pelo **Raspberry Pi Pico W**, enviada via **TCP/WiFi** para o
 
 ---
 
-# ✔️ **To-Do List**
+# **To-Do List**
 
-### 🔌 Hardware
+### Hardware
 
 * [ ] Montagem: potenciômetro → ADC (GP26)
 * [ ] LED → GP21
 * [ ] Teste de alimentação e GND comum
 
-### 🧠 Raspberry Pi Pico W
+### Raspberry Pi Pico W
 
 * [ ] Conexão automática ao WiFi
 * [ ] Servidor TCP escutando porta **8000**
@@ -68,7 +68,7 @@ A leitura é feita pelo **Raspberry Pi Pico W**, enviada via **TCP/WiFi** para o
 * [ ] Lógica do jogo (piscar LED, tensão crescente)
 * [ ] Tratamento de desconexão
 
-### 💻 Código no PC (Pygame)
+### Código no PC (Pygame)
 
 * [ ] Conexão TCP com reconexão automática
 * [ ] Leitura e filtro com noise
@@ -79,11 +79,11 @@ A leitura é feita pelo **Raspberry Pi Pico W**, enviada via **TCP/WiFi** para o
 
 ---
 
-# 🛠️ **Como Executar**
+# **Como Executar**
 
 ---
 
-## 1️⃣ **No Raspberry Pi Pico W**
+## **No Raspberry Pi Pico W**
 
 Copiar para o Pico:
 
@@ -108,7 +108,7 @@ Rodar:
 
 ---
 
-## 2️⃣ **No PC – Jogo Completo**
+## **No PC – Jogo Completo**
 
 Arquivo:
 
@@ -138,7 +138,7 @@ O fluxo será:
 
 ---
 
-## 3️⃣ **Testes Avulsos**
+## **Testes Avulsos**
 
 ### **Testar leitura e barra gráfica**
 
@@ -159,7 +159,7 @@ pc_code/test_led.py
 
 ---
 
-# 🎮 **Regras do Jogo**
+# **Regras do Jogo**
 
 | Evento                  | Detalhe                                        |
 | ----------------------- | ---------------------------------------------- |
@@ -172,16 +172,16 @@ pc_code/test_led.py
 
 ---
 
-# 🔧 **Protocolos de Comunicação**
+# **Protocolos de Comunicação**
 
-### 📤 *Pico → PC*
+### *Pico → PC*
 
 ```
 VAL:xx.xx
 LOSER_TIMEOUT
 ```
 
-### 📥 *PC → Pico*
+### *PC → Pico*
 
 ```
 COMMAND:PING
@@ -192,7 +192,7 @@ LED:OFF
 
 ---
 
-# 📚 **Arquivos Importantes**
+# **Arquivos Importantes**
 
 ---
 
@@ -227,7 +227,7 @@ LED:OFF
 
 ---
 
-# 🧪 **Checklist de Entrega**
+# **Checklist de Entrega**
 
 ### Hardware
 
