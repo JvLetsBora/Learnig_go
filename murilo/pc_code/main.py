@@ -1,12 +1,10 @@
 import threading, queue, time, socket, pygame
 import random
 
-# ===== CONFIG =====
 PICO_HOST = "192.168.43.206"
 PICO_PORT = 8009
 RECONNECT_INTERVAL = 2.0
 SEND_THROTTLE_MS = 40
-# ==================
 
 WIDTH, HEIGHT = 900, 600
 FPS = 60
@@ -24,7 +22,6 @@ running = True
 _last_send_ms = 0
 _last_send_ms_lock = threading.Lock()
 
-# Conexão e gerenciamento do socket
 sock = None
 
 
@@ -83,7 +80,7 @@ def tcp_reader_thread(host, port, rx_q):
             for line in lines:
                 if not line:
                     continue
-                # coloca na fila para UI/log
+
                 try:
                     rx_q.put_nowait(line)
                 except queue.Full:
@@ -96,7 +93,7 @@ def tcp_reader_thread(host, port, rx_q):
                         try:
                             v = float(parts[1])
                             with pico_lock:
-                                pico_value = read_with_noise(v, 0.15)
+                                pico_value = read_with_noise(v, 0.05)
                         except:
                             pass
 
@@ -182,7 +179,6 @@ def led_off(): send_command_ascii("LED:OFF")
 def start_game(): send_command_ascii("COMMAND:START_GAME")
 def win(): send_command_ascii("COMMAND:WIN")
 
-# ----------------- UI / Game (mantive seu código)
 def run_menu():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -293,7 +289,6 @@ def run_game():
     time.sleep(0.05)
     pygame.quit()
 
-# ====== MAIN ======
 if __name__ == "__main__":
     t_reader = threading.Thread(target=tcp_reader_thread, args=(PICO_HOST, PICO_PORT, rx_queue), daemon=True)
     t_writer = threading.Thread(target=tcp_writer_thread, daemon=True)
