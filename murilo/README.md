@@ -75,7 +75,6 @@ A leitura é feita pelo **Raspberry Pi Pico W**, enviada via **TCP/WiFi** para o
 * [ ] Renderização do jogo (círculo + barra + HUD)
 * [ ] Lógica de vitória
 * [ ] Lógica de estabilidade
-* [ ] Envio de comandos throttle (40ms)
 
 ---
 
